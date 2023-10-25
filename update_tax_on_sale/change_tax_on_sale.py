@@ -52,11 +52,10 @@ def change_tax_id(sale_json,products_hash, new_tax_id, old_tax_id):
     sale = sale_json['register_sales'][0]
     products = sale['register_sale_products']
     for product in products:
-        # some products don't need to be changed and in this case the old_tax_id is the correct one. 
-        # this checks to make sure the product is not in the list of products that should have the old_tax_id
-        if product["tax_id"] == old_tax_id:
-            if not products_hash.get(product["product_id"]):
-                product["tax_id"] = new_tax_id
+        # some products don't need to be changed and in this case the old_tax_id is the correct one.
+        # this checks to make sure the product is in the list of products that should have the new_tax_id
+        if product["tax_id"] == old_tax_id and products_hash.get(product["product_id"]):
+            product["tax_id"] = new_tax_id
     return sale
 
 def post_sale(header,url,sale_json):
